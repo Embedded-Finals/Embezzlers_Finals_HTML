@@ -14,7 +14,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
         }
         
@@ -125,13 +125,12 @@
     <script>
         const channelID = '3153327';
         const readAPIKey = '2K6TQY12XFNV8JD0';
-        const resultsCount = 50; // Number of recent entries to display
+        const resultsCount = 50;
         
-        // Load data when page loads
         window.onload = function() {
             loadData();
-            // Auto-refresh every 30 seconds
-            setInterval(loadData, 30000);
+            // Auto-refresh every 15 seconds
+            setInterval(loadData, 15000);
         };
         
         function loadData() {
@@ -150,16 +149,12 @@
         
         function displayData(data) {
             const feeds = data.feeds;
-            const channel = data.channel;
             
-            // Update info
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
             document.getElementById('totalEntries').textContent = feeds.length;
-            
-            // Clear error message
             document.getElementById('errorMessage').innerHTML = '';
             
-            // Create table
+            // Create table with only 4 columns
             let tableHTML = `
                 <table>
                     <thead>
@@ -168,16 +163,11 @@
                             <th>Date & Time</th>
                             <th>Access Type</th>
                             <th>RFID ID</th>
-                            <th>Water Flow Rate</th>
-                            <th>Pump Status</th>
-                            <th>Water Alert</th>
-                            <th>Access Count</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
             
-            // Add data rows (reverse order to show newest first)
             feeds.reverse().forEach(entry => {
                 const date = new Date(entry.created_at);
                 const accessType = getAccessType(entry.field3);
@@ -189,10 +179,6 @@
                         <td>${date.toLocaleString()}</td>
                         <td class="${accessClass}">${accessType}</td>
                         <td>${entry.field4 || '-'}</td>
-                        <td>${entry.field1 || '-'}</td>
-                        <td>${entry.field2 || '-'}</td>
-                        <td>${entry.field5 || '-'}</td>
-                        <td>${entry.field6 || '-'}</td>
                     </tr>
                 `;
             });
@@ -220,5 +206,4 @@
         }
     </script>
 </body>
-
 </html>
